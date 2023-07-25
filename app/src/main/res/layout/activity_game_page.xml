@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#20283a">
+    <!-- Need to add code to change image depending on game selected
+         as well as most other things on this page
+
+         Should Change base text to something like error pulling from database after-->
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="160dp"
+        android:layout_height="243dp"
+        app:srcCompat="@drawable/gamelogo"
+        tools:layout_editor_absoluteX="27dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="142dp"
+        android:layout_height="55dp"
+        android:text="Review"
+        tools:layout_editor_absoluteX="241dp"
+        tools:layout_editor_absoluteY="42dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Diablo"
+        tools:layout_editor_absoluteX="241dp"
+        android:textSize="40sp"
+        android:textColor="#FFFFFF"
+        tools:layout_editor_absoluteY="108dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Avg Rating"
+        android:textSize="28sp"
+        android:textColor="#FFFFFF"
+        tools:layout_editor_absoluteX="241dp"
+        tools:layout_editor_absoluteY="171dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="389dp"
+        android:layout_height="223dp"
+        android:text="It serves as the fourth main installment in the Diablo series, continuing the dark and gritty fantasy world that has captivated players for years. Set in Sanctuary, a gothic-inspired world infested with demonic forces, Diablo 4 promises a return to the series' roots, delivering a dark and brutal experience. Players will embark on a perilous journey, choosing one of several playable classes, including the Barbarian, Sorceress, and Druid, each with their own unique playstyle and abilities."
+        android:textSize="17sp"
+        android:textColor="#FFFFFF"
+        tools:layout_editor_absoluteX="17dp"
+        tools:layout_editor_absoluteY="291dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
