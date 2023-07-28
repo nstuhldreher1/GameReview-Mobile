@@ -75,8 +75,9 @@ class MainActivity : AppCompatActivity() {
         val et_username = findViewById<EditText>(R.id.et_username)
         val et_password = findViewById<EditText>(R.id.et_password)
         val btn_login = findViewById<Button>(R.id.btn_login)
+        val btn_register = findViewById<Button>(R.id.btn_register)
 
-        // Capture the outer this@login reference in a variable
+
         val context = this
 
         btn_login.setOnClickListener {
@@ -99,6 +100,11 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+
+        btn_register.setOnClickListener {
+            val intent = Intent(this, activity_registration::class.java)
+            context.startActivity(intent)
         }
     }
 
