@@ -15,11 +15,11 @@ import kotlinx.coroutines.launch
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.setBody
 import io.ktor.http.contentType
+import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-
-
+import kotlin.math.log
 
 
 @Serializable
@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
 
         // Call the async function using coroutines
         GlobalScope.launch {
-            connectWebsite("BobEvans", "wow")
+            loginWebsite("BobEvans", "wow")
         }
 
         btn_login.setOnClickListener {
@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    suspend fun connectWebsite(username:String, password:String) {
+    suspend fun loginWebsite(username:String, password:String): Boolean {
         val client = HttpClient(CIO) {
             install(ContentNegotiation) {
                 json(Json {
@@ -102,7 +102,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         println(response)
+
         client.close()
+
+        return response.status.isSuccess()
     }
 
 
@@ -147,6 +150,7 @@ class MainActivity : AppCompatActivity() {
 
         println(response)
         client.close()
+        return
     }
 
     suspend fun addReview(userID: String, gameID: String,
