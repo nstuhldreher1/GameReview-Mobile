@@ -17,6 +17,8 @@ import io.ktor.client.request.setBody
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlin.math.log
@@ -74,14 +76,29 @@ class MainActivity : AppCompatActivity() {
         val et_password = findViewById<EditText>(R.id.et_password)
         val btn_login = findViewById<Button>(R.id.btn_login)
 
-        // Call the async function using coroutines
-        GlobalScope.launch {
-            loginWebsite("BobEvans", "wow")
-        }
+        // Capture the outer this@login reference in a variable
+        val context = this
 
         btn_login.setOnClickListener {
-            val intent = Intent(this, activity_registration::class.java)
-            startActivity(intent)
+            val username = et_username.text.toString()
+            val password = et_password.text.toString()
+
+            // Call the async function using coroutines
+            GlobalScope.launch {
+                val result = loginWebsite(username, password)
+
+                // Switch to the main thread to update the UI
+                withContext(Dispatchers.Main) {
+                    if (result) {
+                        // If login is successful, start the new activity
+                        val intent = Intent(context, activity_registration::class.java)
+                        context.startActivity(intent)
+                    } else {
+                        // Handle login failure here (optional)
+                        // e.g., show an error message
+                    }
+                }
+            }
         }
     }
 
