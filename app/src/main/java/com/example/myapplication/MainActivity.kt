@@ -1,4 +1,5 @@
 package com.example.myapplication
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -65,6 +66,8 @@ data class LoadGamePage(val gameID: String, val userID: String)
 
 class MainActivity : AppCompatActivity() {
 
+    val USER_KEY = "user"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -91,6 +94,14 @@ class MainActivity : AppCompatActivity() {
                 // Switch to the main thread to update the UI
                 withContext(Dispatchers.Main) {
                     if (result) {
+
+                        //Saved users Username for use in other activities
+                        val sharedPreferences = getSharedPreferences("Username", Context.MODE_PRIVATE)
+                        val editor = sharedPreferences.edit()
+                        editor.apply {
+                            putString(USER_KEY, username)
+                        }.apply()
+
                         // If login is successful, start the new activity
                         val intent = Intent(context, activity_registration::class.java)
                         context.startActivity(intent)
