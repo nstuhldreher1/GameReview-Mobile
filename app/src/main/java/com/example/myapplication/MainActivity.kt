@@ -49,7 +49,8 @@ data class SearchGames(val searchGames: String)
 data class SearchUsers(val searchUsers: String)
 @Serializable
 data class LoadGamePage(val gameID: String, val userID: String)
-
+@Serializable
+data class  LoadUserPage(val userID: String)
 
 
 
@@ -110,8 +111,7 @@ class MainActivity : AppCompatActivity() {
 
 
     suspend fun registerUser(username:String, name: String,
-                             email: String, password: String)
-    {
+                             email: String, password: String): Boolean {
         val client = HttpClient(CIO) {
             install(ContentNegotiation) {
                 json(Json {
@@ -129,6 +129,7 @@ class MainActivity : AppCompatActivity() {
 
         println(response)
         client.close()
+        return response.status.isSuccess()
     }
 
     suspend fun verifyUser(username: String, code: String)
@@ -150,7 +151,7 @@ class MainActivity : AppCompatActivity() {
 
         println(response)
         client.close()
-        return
+        return 
     }
 
     suspend fun addReview(userID: String, gameID: String,
@@ -334,15 +335,42 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
-        val response: HttpResponse = client.post("https://gamereview-debf57bc9a85.herokuapp.com/api/verifyOtp") {
+        val response: HttpResponse = client.post("https://gamereview-debf57bc9a85.herokuapp.com/api/loadGamePage") {
             contentType(ContentType.Application.Json)
             setBody(LoadGamePage(gameID, userID))
 
         }
 
+
+
         println(response)
         client.close()
     }
+
+    suspend fun loadUserPage(userID: String): Boolean {
+        val client = HttpClient(CIO) {
+            install(ContentNegotiation) {
+                json(Json {
+                    prettyPrint = true
+                    isLenient = true
+                })
+            }
+
+        }
+        val response: HttpResponse = client.post("https://gamereview-debf57bc9a85.herokuapp.com/api/loadUserInfo") {
+            contentType(ContentType.Application.Json)
+            setBody(LoadUserPage(userID))
+
+        }
+
+
+
+        println(response)
+        client.close()
+        return response.status.isSuccess()
+    }
+
+
 
 
 
