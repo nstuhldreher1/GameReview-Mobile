@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity() {
                         }.apply()
 
                         // If login is successful, start the new activity
-                        val intent = Intent(context, activity_registration::class.java)
+                        val intent = Intent(context, activity_home::class.java)
                         context.startActivity(intent)
                     } else {
                         // Handle login failure here (optional)
