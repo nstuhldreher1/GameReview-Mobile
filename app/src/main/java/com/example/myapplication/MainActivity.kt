@@ -1,4 +1,5 @@
 package com.example.myapplication
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -17,6 +18,8 @@ import io.ktor.client.request.setBody
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlin.math.log
@@ -64,6 +67,8 @@ data class  LoadUserPage(val userID: String)
 
 class MainActivity : AppCompatActivity() {
 
+    val USER_KEY = "user"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -74,15 +79,44 @@ class MainActivity : AppCompatActivity() {
         val et_username = findViewById<EditText>(R.id.et_username)
         val et_password = findViewById<EditText>(R.id.et_password)
         val btn_login = findViewById<Button>(R.id.btn_login)
+        val btn_register = findViewById<Button>(R.id.btn_register)
 
-        // Call the async function using coroutines
-        GlobalScope.launch {
-            loginWebsite("BobEvans", "wow")
-        }
+
+        val context = this
 
         btn_login.setOnClickListener {
+            val username = et_username.text.toString()
+            val password = et_password.text.toString()
+
+            // Call the async function using coroutines
+            GlobalScope.launch {
+                val result = loginWebsite(username, password)
+
+                // Switch to the main thread to update the UI
+                withContext(Dispatchers.Main) {
+                    if (result) {
+
+                        //Saved users Username for use in other activities
+                        val sharedPreferences = getSharedPreferences("Username", Context.MODE_PRIVATE)
+                        val editor = sharedPreferences.edit()
+                        editor.apply {
+                            putString(USER_KEY, username)
+                        }.apply()
+
+                        // If login is successful, start the new activity
+                        val intent = Intent(context, activity_registration::class.java)
+                        context.startActivity(intent)
+                    } else {
+                        // Handle login failure here (optional)
+                        // e.g., show an error message
+                    }
+                }
+            }
+        }
+
+        btn_register.setOnClickListener {
             val intent = Intent(this, activity_registration::class.java)
-            startActivity(intent)
+            context.startActivity(intent)
         }
     }
 

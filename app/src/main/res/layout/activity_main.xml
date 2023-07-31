@@ -91,7 +91,7 @@
         app:srcCompat="@drawable/gamelogo" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/btn_register"
         android:layout_width="189dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
