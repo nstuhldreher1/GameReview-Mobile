@@ -55,7 +55,7 @@ data class SearchUsers(val searchUsers: String)
 @Serializable
 data class LoadGamePage(val gameID: String, val userID: String)
 @Serializable
-data class  LoadUserPage(val UserID: String?= null)
+data class  LoadUserPage(val UserID: Int?= null)
 
 
 @Serializable
@@ -70,7 +70,7 @@ data class UserPageData(val userInfo: GetUser, val reviewInfo: Review)
 
 
 object UserSingleton{
-    var userID: Int? = null
+    var userID: Int?= null
 
 }
 
@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity() {
             val password = et_password.text.toString()
 
             // Call the async function using coroutines
-            GlobalScope.launch {
+            val job = GlobalScope.launch {
                 val result = loginWebsite(username, password)
 
                 // Switch to the main thread to update the UI
@@ -127,12 +127,15 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
+
         }
 
         btn_register.setOnClickListener {
             val intent = Intent(this, activity_registration::class.java)
             context.startActivity(intent)
         }
+
+
     }
 
     suspend fun loginWebsite(username:String, password:String): Boolean {
@@ -401,7 +404,7 @@ class MainActivity : AppCompatActivity() {
         client.close()
     }
 
-    suspend fun loadUserPage(userID: String): UserPageData {
+    suspend fun loadUserPage(userID: Int?= null): UserPageData {
         val client = HttpClient(CIO) {
             install(ContentNegotiation) {
                 json(Json {

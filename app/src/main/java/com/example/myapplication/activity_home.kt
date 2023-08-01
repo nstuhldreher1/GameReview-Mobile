@@ -43,10 +43,12 @@ class activity_home : AppCompatActivity() {
 
         var info: UserPageData
         val job = GlobalScope.launch {
-            info = loadUserPage(userID = UserSingleton.userID.toString())
+            info = loadUserPage(UserSingleton.userID)
 
         }
         job.cancel()
+
+
 
         return listOf(
 
@@ -57,7 +59,7 @@ class activity_home : AppCompatActivity() {
     }
 
 
-    suspend fun loadUserPage(userID: String): UserPageData {
+    suspend fun loadUserPage(userID: Int?=null): UserPageData {
         val client = HttpClient(CIO) {
             install(ContentNegotiation) {
                 json(Json {
@@ -73,9 +75,10 @@ class activity_home : AppCompatActivity() {
             setBody(LoadUserPage(userID))
 
         }
+        println(response.status)
 
         val responseBody = response.body<UserPageData>()
-        println(response)
+
         client.close()
         return responseBody
     }
