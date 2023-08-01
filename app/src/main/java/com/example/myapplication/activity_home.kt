@@ -43,7 +43,7 @@ class activity_home : AppCompatActivity() {
 
         var info: UserPageData
         val job = GlobalScope.launch {
-            info = loadUserPage(UserSingleton.userID)
+            info = loadUserPage(UserSingleton.getUser())
 
         }
         job.cancel()

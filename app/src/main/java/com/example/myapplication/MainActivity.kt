@@ -64,13 +64,21 @@ data class Review(val userID: Int?=null, val gameID: Int?=null,
                   val profilePicture: String?=null )
 @Serializable
 data class GetUser(val username: String?=null, val password: String?=null, val isConfirmed: Boolean?=null,
-    val email: String?=null, val verifyCode:Int?=null, val UserID: Int?=null, val name: String?=null )
+    val email: String?=null, val verifyCode:Int?=null, val userID: Int?=null, val name: String?=null )
 @Serializable
 data class UserPageData(val userInfo: GetUser, val reviewInfo: Review)
 
 
 object UserSingleton{
     var userID: Int?= null
+
+    fun setUser(newUser: Int?=null) {
+        userID = newUser
+    }
+
+    fun getUser(): Int?{
+        return userID
+    }
 
 }
 
@@ -155,11 +163,9 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        println(response)
-
         val user = response.body<GetUser>()
-        UserSingleton.userID = user.UserID
-
+        print(response)
+        UserSingleton.setUser(user.userID)
 
         client.close()
 
