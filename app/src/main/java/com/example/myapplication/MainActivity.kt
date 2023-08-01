@@ -55,19 +55,21 @@ data class SearchUsers(val searchUsers: String)
 @Serializable
 data class LoadGamePage(val gameID: String, val userID: String)
 @Serializable
-data class  LoadUserPage(val userID: String)
+data class  LoadUserPage(val UserID: String?= null)
 
 
-
-data class Review(val userID: Int, val gameID: Int,
-    val reviewID: Int, val comment: String, val activity: String, val profilePicture: String )
-
-data class GetUser(val username: String, val password: String, val isConfirmed: Boolean,
-    val email: String, val verifyCode:Int, val userID: Int, val name: String )
+@Serializable
+data class Review(val userID: Int?=null, val gameID: Int?=null,
+    val reviewID: Int?=null, val comment: String?=null, val activity: String?=null,
+                  val profilePicture: String?=null )
+@Serializable
+data class GetUser(val username: String?=null, val password: String?=null, val isConfirmed: Boolean?=null,
+    val email: String?=null, val verifyCode:Int?=null, val UserID: Int?=null, val name: String?=null )
+@Serializable
 data class UserPageData(val userInfo: GetUser, val reviewInfo: Review)
 
 
-object userSingleton{
+object UserSingleton{
     var userID: Int? = null
 
 }
@@ -139,6 +141,7 @@ class MainActivity : AppCompatActivity() {
                 json(Json {
                     prettyPrint = true
                     isLenient = true
+                    ignoreUnknownKeys = true
                 })
             }
 
@@ -152,7 +155,7 @@ class MainActivity : AppCompatActivity() {
         println(response)
 
         val user = response.body<GetUser>()
-        userSingleton.userID = user.userID
+        UserSingleton.userID = user.UserID
 
 
         client.close()

@@ -41,10 +41,15 @@ class activity_home : AppCompatActivity() {
 
     private fun getReviewDataFromApi(): List<ReviewData> {
 
-        GlobalScope.launch {
-            val info = loadUserPage(userID = userSingleton.userID.toString())
+        var info: UserPageData
+        val job = GlobalScope.launch {
+            info = loadUserPage(userID = UserSingleton.userID.toString())
+
         }
+        job.cancel()
+
         return listOf(
+
             ReviewData("John Doe", "john_doe_123", "Awesome Game", "This game is amazing!"),
             ReviewData("Jane Smith", "jane_smith_456", "Cool Game", "Great gameplay and graphics!"),
             ReviewData("Bob Johnson", "bob_johnson_789", "Fun Game", "Highly recommended!")
@@ -58,6 +63,7 @@ class activity_home : AppCompatActivity() {
                 json(Json {
                     prettyPrint = true
                     isLenient = true
+                    ignoreUnknownKeys = true
                 })
             }
 
