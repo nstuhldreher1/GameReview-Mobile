@@ -6,6 +6,8 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.call.receive
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.post
@@ -57,7 +59,18 @@ data class  LoadUserPage(val userID: String)
 
 
 
+data class Review(val userID: Int, val gameID: Int,
+    val reviewID: Int, val comment: String, val activity: String, val profilePicture: String )
 
+data class GetUser(val username: String, val password: String, val isConfirmed: Boolean,
+    val email: String, val verifyCode:Int, val userID: Int, val name: String )
+data class UserPageData(val userInfo: GetUser, val reviewInfo: Review)
+
+
+object userSingleton{
+    var userID: Int? = null
+
+}
 
 
 
@@ -137,6 +150,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         println(response)
+
+        val user = response.body<GetUser>()
+        userSingleton.userID = user.userID
+
 
         client.close()
 
@@ -381,7 +398,7 @@ class MainActivity : AppCompatActivity() {
         client.close()
     }
 
-    suspend fun loadUserPage(userID: String): Boolean {
+    suspend fun loadUserPage(userID: String): UserPageData {
         val client = HttpClient(CIO) {
             install(ContentNegotiation) {
                 json(Json {
@@ -397,11 +414,10 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-
-
+        val responseBody = response.body<UserPageData>()
         println(response)
         client.close()
-        return response.status.isSuccess()
+        return responseBody
     }
 
 
