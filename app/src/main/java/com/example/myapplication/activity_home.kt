@@ -77,10 +77,13 @@ class activity_home : AppCompatActivity() {
         }
         println(response.status)
 
-        val responseBody = response.body<UserPageData>()
+        val responseBody = response.body<String>()
 
+        val userPageData = Json.decodeFromString<UserPageData>(responseBody)
+
+        println(userPageData)
         client.close()
-        return responseBody
+        return userPageData
     }
 
 }
